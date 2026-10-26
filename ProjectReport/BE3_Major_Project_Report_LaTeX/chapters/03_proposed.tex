@@ -1,0 +1,41 @@
+%==================== CHAPTER 3 ====================
+\ChapterPage{Proposed System}
+
+\section{Problem Statement}
+The tools that business teams use today were built for a world where information lived in structured databases and workflows followed fixed, predictable rules. Hiring meant posting a job, collecting applications in a spreadsheet and reading through them one by one. Marketing meant creating a template and filling it in for each channel. Research meant opening several browser tabs and taking notes. These processes have not fundamentally changed, even as the volume of work has grown substantially and the stakes of getting things wrong have become clearer.
+
+The consequences are real. A recruiter who screens a thousand resumes with a keyword filter will miss strong candidates who did not phrase their experience the right way. A screening system that assigns scores without explaining them gives the recruiter no way to catch mistakes or bias. A marketing team that publishes content without a structured review process is one bad post away from a brand crisis. A podcast host who builds a guest briefing from unchecked sources risks amplifying false or defamatory information on air. And in every case, the data the team needs is locked in a different system from the one they are currently looking at, each requiring its own login and its own way of being queried.
+
+What is missing is a system that takes over the repetitive, high-volume parts of these workflows, explains every output clearly enough that a person can check it, and then waits for that person's approval before doing anything that cannot be undone.
+
+\section{Scope}
+This project covers four business workstreams, defined in collaboration with our industry partner \Partner: HR recruitment and HR assistance, marketing content operations, podcast guest background research, and enterprise integrations with Zoho, Workday and Greenhouse-style platforms. Across all four, the project includes a shared workflow router, a retrieval-augmented knowledge layer, human approval gates at every consequential step, PII protection and a complete audit log, all packaged as a reusable framework.
+
+There are clear boundaries around what the system does and does not do. It assists people; it does not make final hiring, rejection, salary or disciplinary decisions on their behalf. It holds content for approval; it does not publish anything without a person saying yes. All development is done with synthetic, public or sanitised data and with mock or sandbox APIs, not live production credentials. The framework is designed to be extended to other business functions later, such as finance and sales, but that is outside the current scope.
+
+\section{Proposed System}
+\textbf{\ProjectTitle} is a modular multi-agent platform built around a single idea: business workflows should be fast and consistent where the work is repetitive, and human where the decisions matter.
+
+\vspace{12pt}
+\RunIn{System Overview}
+Every interaction starts at a web dashboard. A user or an incoming business event triggers a request, which a workflow router classifies and sends to the right group of specialist agents. Those agents pull context from a shared knowledge base and call enterprise connectors as needed. Anything that involves a consequential action -- sending an email to a candidate, publishing a post, writing a record back to an HR system -- goes into an approval queue rather than executing immediately. A human reviewer looks at it, approves or edits it, and only then does the system act. The whole exchange is written to an audit log.
+
+\vspace{12pt}
+\RunIn{Key Components}
+\begin{itemize}
+  \item \textbf{Web Dashboard} -- A Next.js interface where HR managers, marketing teams and researchers interact with the system: creating jobs, reviewing candidate rankings, editing content drafts and clearing the approval queue. Candidates have a separate public-facing apply page.
+  \item \textbf{Workflow Router} -- Classifies each incoming request as an HR, marketing, podcast research or integration task and hands it to the matching set of agents.
+  \item \textbf{HR Agents} -- A set of specialised agents covering rubric generation from job descriptions, resume parsing and adversarial scanning, claim verification, evidence-backed screening, interview question generation, live AI interviewing, candidate ranking and follow-up. Separate assistants handle employee queries about onboarding, leave, attendance and HR policy.
+  \item \textbf{Marketing Agents} -- Agents that turn a theme or source content into a content calendar, campaign and creative briefs, audience segments and channel-specific social copy. All drafts wait in an approval queue before going anywhere.
+  \item \textbf{Podcast Research Agents} -- Agents that gather public sources about a guest, index them for retrieval, build a structured briefing and label every claim as a verified fact, an allegation or an opinion. Sensitive-topic guardrails are applied before the briefing reaches the host.
+  \item \textbf{Integration Agent and Connector Layer} -- A unified connector interface for Zoho People, Zoho CRM and Recruit, Workday-style HRIS, Greenhouse-style ATS, CRM and email, calendar and social media APIs. Handles OAuth, rate limits, pagination, webhooks, retries and idempotency so that agents do not need to know the details of each system.
+  \item \textbf{Knowledge (RAG) Layer} -- A vector store holding company policies, brand guidelines, job descriptions, approved rubrics, previous campaigns and guest research sources. Agents retrieve from this store rather than working from memory alone.
+  \item \textbf{AI Provider Layer} -- A switchable configuration that routes agent calls to Google Gemini, OpenAI GPT models or local models through Ollama, depending on availability and cost.
+  \item \textbf{Compliance Reviewer and Guardrails} -- Sits between every agent output and the approval queue. Checks for PII that should not be in a prompt or a log, for prompt injection in user-uploaded content and for claims that are not supported by a cited source. Flags issues for human review rather than letting them through silently.
+  \item \textbf{Approval Layer} -- Holds rubrics, candidate decisions, content drafts, guest briefings and outgoing connector writes until a human acts on them. Nothing consequential executes without this step.
+  \item \textbf{Audit Layer and Data Store} -- Supabase-backed storage for all jobs, candidates, scores, drafts and reports, plus a structured log of every prompt, tool call, source, draft version, reviewer identity and final output. Protected by role-based access controls.
+\end{itemize}
+
+\vspace{12pt}
+\RunIn{Workflow of the Proposed System}
+When a request arrives, the workflow router classifies it and dispatches it to the appropriate specialist agents. The agents retrieve what they need from the knowledge base and call enterprise connectors where necessary. Every output that carries a consequence is held in the approval queue rather than acted on immediately. The compliance reviewer checks each item for PII exposure, prompt injection and unsupported claims before it reaches the reviewer. The human reviewer reads it, approves, edits or rejects it. Approved actions are sent through the connector layer. Every step from the initial prompt to the final output is written to the audit log.

@@ -1,0 +1,219 @@
+%==================== APPENDIX F: SOFTWARE REQUIREMENTS SPECIFICATION ====================
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendix F: Software Requirements Specification}
+\begin{center}
+  {\LARGE\bfseries Appendix F: Software Requirements Specification\par}
+\end{center}
+\vspace{18pt}
+
+%------------------------------------------------------------------
+\section*{1. Introduction}
+
+\noindent\textbf{1.1 Purpose}\\
+This Software Requirements Specification (SRS) defines the functional and non-functional requirements for \textbf{\ProjectTitle{}}, an integrated multi-agent AI platform for HR recruitment, marketing content operations, podcast guest research and enterprise integrations. The document is intended for the development team, academic supervisors and industry partners at \Partner{}.
+
+\vspace{8pt}
+\noindent\textbf{1.2 Scope}\\
+\ProjectTitle{} automates repetitive business workflows across HR, marketing and podcast production using specialised LLM agents coordinated by a workflow router. The system provides rubric-based resume screening, AI-conducted interviews, channel-specific content drafting, source-backed guest briefings and secure connectors to Zoho, Workday-style and Greenhouse-style APIs. It does not make final hiring, rejection, salary or publishing decisions autonomously; every consequential action requires human approval.
+
+\vspace{8pt}
+\noindent\textbf{1.3 Definitions, Acronyms, and Abbreviations}
+
+\renewcommand{\arraystretch}{1.15}
+\noindent\begin{tabular}{|p{0.28\textwidth}|p{0.65\textwidth}|}
+\hline
+\textbf{Term} & \textbf{Definition} \\ \hline
+LLM & Large Language Model \\ \hline
+RAG & Retrieval-Augmented Generation \\ \hline
+ATS & Applicant Tracking System \\ \hline
+HRMS & Human Resource Management System \\ \hline
+PII & Personally Identifiable Information \\ \hline
+OAuth & Open Authorisation (industry-standard protocol for access delegation) \\ \hline
+JD & Job Description \\ \hline
+API & Application Programming Interface \\ \hline
+HR & Human Resources \\ \hline
+CRM & Customer Relationship Management \\ \hline
+n8n & Node-based workflow automation platform \\ \hline
+pgvector & PostgreSQL extension for vector similarity search \\ \hline
+\end{tabular}
+
+\vspace{8pt}
+\noindent\textbf{1.4 References}\\
+Industry partner milestone plan and problem statement provided by \Partner{}; fortnightly review presentations (July--October 2026); IEEE Std 29148-2018 Systems and Software Engineering -- Life cycle processes -- Requirements engineering.
+
+%------------------------------------------------------------------
+\vspace{16pt}
+\section*{2. Overall Description}
+
+\noindent\textbf{2.1 Product Perspective}\\
+\ProjectTitle{} is a standalone web-based platform that integrates with external enterprise systems through a connector layer. The front end is a Next.js dashboard; the back end comprises a workflow router, domain-specific LLM agents, a RAG knowledge layer, a compliance reviewer, a human approval gate and an audit store backed by Supabase. The system does not replace existing HRMS or ATS products; it orchestrates work across them.
+
+\vspace{8pt}
+\noindent\textbf{2.2 Product Functions}\\
+The major functions of the system are:
+\begin{itemize}
+  \item Rubric generation from a job description, followed by HR review and approval.
+  \item Resume parsing, adversarial-content scanning, claim verification and rubric-based scoring.
+  \item AI-conducted live interviews with rubric-aligned scoring and final candidate ranking.
+  \item HR assistant for onboarding, leave, attendance and policy queries.
+  \item Content calendar, campaign brief and channel-specific draft generation for marketing teams.
+  \item Podcast guest background reports with every claim labelled as a fact, allegation or opinion.
+  \item Enterprise data synchronisation with Zoho People, Zoho CRM and Recruit, Workday-style APIs and Greenhouse-style ATS objects.
+  \item Human approval queues, PII redaction, compliance review and immutable audit logging.
+\end{itemize}
+
+\vspace{8pt}
+\noindent\textbf{2.3 User Characteristics}\\
+\begin{itemize}
+  \item \textbf{HR Recruiter:} Intermediate computer literacy; creates jobs, reviews rubrics and ranking lists, makes hiring decisions.
+  \item \textbf{Candidate:} General public; submits a resume and completes an AI interview via a public link.
+  \item \textbf{Marketing User:} Non-technical; creates content themes and manages the approval queue.
+  \item \textbf{Podcast Host / Researcher:} Moderate technical literacy; requests and reviews guest briefings.
+  \item \textbf{Administrator:} Technical; configures connectors, OAuth accounts and system settings.
+\end{itemize}
+
+\vspace{8pt}
+\noindent\textbf{2.4 Constraints}
+\begin{itemize}
+  \item Development uses only synthetic, publicly available or sanitised data; no live client PII.
+  \item Enterprise integrations use sandbox, trial or mock APIs during development.
+  \item Hosted LLM costs must be minimised; local models via Ollama are used for development and testing.
+  \item The system must run on the developers' existing hardware for development; production deployment targets free or low-cost hosting tiers.
+\end{itemize}
+
+\vspace{8pt}
+\noindent\textbf{2.5 Assumptions and Dependencies}
+\begin{itemize}
+  \item Google Gemini and OpenAI API endpoints are available and responsive.
+  \item Supabase PostgreSQL, Storage and pgvector are accessible with the configured credentials.
+  \item Zoho, Workday-style and Greenhouse-style sandbox APIs maintain their documented schema.
+  \item n8n community edition is self-hosted and reachable from the backend.
+\end{itemize}
+
+%------------------------------------------------------------------
+\vspace{16pt}
+\section*{3. Specific Requirements}
+
+\noindent\textbf{3.1 External Interfaces}
+
+\textit{User Interfaces:} A Next.js web dashboard with separate views for HR recruitment, marketing, podcast research, integrations, human review and audit log. A public candidate apply page accessible without login. Approval queue items show the full agent output, evidence and approve/edit/reject actions.
+
+\textit{Software Interfaces:} Supabase REST and Realtime APIs for data, storage, authentication and vector search; Google Gemini and OpenAI completion and embedding endpoints; Zoho People and Recruit APIs; Workday-style HRIS API stub; Greenhouse Harvest API; Meta Marketing API; Mailchimp Marketing API; Google Calendar and Sheets APIs; n8n webhook endpoints.
+
+\textit{Hardware Interfaces:} No direct hardware interfaces; the system is entirely web-based.
+
+\textit{Communication Interfaces:} HTTPS for all client--server and server--API communication; OAuth 2.0 for enterprise connector authentication; webhook payloads over HTTPS for event-driven flows.
+
+\vspace{10pt}
+\noindent\textbf{3.2 Functional Requirements}
+
+\renewcommand{\arraystretch}{1.12}
+\noindent\begin{tabular}{|p{0.13\textwidth}|p{0.80\textwidth}|}
+\hline
+\textbf{ID} & \textbf{Requirement} \\ \hline
+REQ-01 & The system shall classify every incoming request and route it to the correct HR, marketing, podcast research or integration workflow. \\ \hline
+REQ-02 & The system shall generate resume and interview rubrics from a job description and present them for HR review and approval before use. \\ \hline
+REQ-03 & The system shall parse uploaded resumes, scan them for adversarial content, verify material claims against public sources and score them against the approved rubric with evidence citations. \\ \hline
+REQ-04 & Candidates whose resume score exceeds the HR-configured threshold shall be auto-qualified; others shall be queued for HR approval. \\ \hline
+REQ-05 & The system shall conduct live AI interviews, score each answer against the interview rubric and produce a ranked shortlist with scorecards for HR review. \\ \hline
+REQ-06 & The system shall answer employee queries about onboarding, leave, attendance and HR policy by retrieving from company documents and Zoho People data, citing the source. \\ \hline
+REQ-07 & The system shall generate marketing content calendars, campaign briefs, audience segments and channel-specific post drafts from a provided theme or source content, guided by a stored brand knowledge base. \\ \hline
+REQ-08 & All marketing drafts shall be held in an approval queue; the system shall publish only after a human approves. \\ \hline
+REQ-09 & The system shall produce podcast guest briefings covering career timeline, expertise map, prior interviews, suggested questions and sensitive topics, with every claim attributed to a cited source and labelled as a verified fact, allegation or opinion. \\ \hline
+REQ-10 & The system shall read and write data in Zoho, Workday-style and Greenhouse-style systems through a typed connector interface that handles OAuth, pagination, rate limits, retries and idempotency. \\ \hline
+REQ-11 & All external write operations and public communications, except auto-qualified interview invitations, shall wait for explicit human approval recorded in the audit log. \\ \hline
+REQ-12 & The system shall store, for every workflow run, the prompt, tool calls, retrieved sources, draft versions, reviewer identity and final output in an immutable audit log. \\ \hline
+\end{tabular}
+
+\vspace{10pt}
+\noindent\textbf{3.3 Usability Requirements}
+\begin{itemize}
+  \item HR and marketing staff with no AI background shall be able to use the dashboard and approval queues without training beyond a brief orientation.
+  \item Approval queue items must display the full agent rationale and evidence so that a reviewer can make an informed decision without consulting other systems.
+  \item The candidate apply page and interview interface must be accessible to applicants on standard desktop and mobile browsers without any account creation.
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{3.4 Performance Requirements}
+\begin{itemize}
+  \item Resume screening results shall be produced within 60 seconds of submission for a standard two-page resume.
+  \item AI interview responses shall be generated within 5 seconds of each candidate answer to maintain a conversational pace.
+  \item Marketing draft generation for a five-post calendar shall complete within 90 seconds.
+  \item Connector sync operations shall complete within 30 seconds for standard paginated fetches of up to 100 records.
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{3.5 Logical Data Requirements}\\
+Jobs, rubrics, candidates, applications, scores, interview transcripts, marketing campaigns, post drafts, guest briefings, connector accounts and audit events are stored in Supabase PostgreSQL. Resume files and multimedia attachments are stored in Supabase private storage buckets. Embeddings for the knowledge base are indexed using pgvector. Retention of candidate PII is limited to the duration of the hiring process; deletion requests are honoured within the same working day.
+
+\vspace{10pt}
+\noindent\textbf{3.6 Security and Safety Requirements}
+\begin{itemize}
+  \item API keys, OAuth tokens and database credentials must be stored in environment variables and must never appear in source code, prompts or logs.
+  \item Candidate PII must be redacted from LLM prompts before scoring; only anonymised content is sent to external model APIs.
+  \item Resume files must be stored in private buckets accessible only through signed, time-limited URLs.
+  \item All connector write operations require an HR-approved scope; least-privilege OAuth scopes must be used.
+  \item Resumes must be scanned for hidden instructions before scoring; flagged files must be routed to a human review queue.
+  \item Role-based access control must prevent candidates from accessing recruiter views and prevent marketing users from accessing HR data.
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{3.7 Quality Attributes / Non-Functional Requirements}
+\begin{itemize}
+  \item \textbf{Reliability:} Connector calls must implement exponential back-off retries and idempotency keys so that transient failures and duplicate events do not create duplicate records.
+  \item \textbf{Maintainability:} New agents, connectors and business functions must be addable through the reusable workflow framework without modifying the router core.
+  \item \textbf{Evaluability:} Each workflow must be exercisable against a synthetic test suite; accuracy, hallucination rate, latency and task completion rate must be measurable.
+  \item \textbf{Portability:} The backend must be deployable on any Node.js-compatible hosting platform; connector configuration must be isolated in environment variables.
+  \item \textbf{Auditability:} Every output must be traceable from the final decision back to the initiating prompt, tool calls, retrieved sources and reviewer within the audit log.
+\end{itemize}
+
+%------------------------------------------------------------------
+\vspace{16pt}
+\section*{4. Verification / Acceptance Criteria}
+
+\renewcommand{\arraystretch}{1.12}
+\noindent\begin{tabular}{|p{0.13\textwidth}|p{0.25\textwidth}|p{0.54\textwidth}|}
+\hline
+\textbf{Req. ID} & \textbf{Method} & \textbf{Criterion} \\ \hline
+REQ-01 & Test execution & Given ten sample requests across all four domains, the router correctly classifies all ten. \\ \hline
+REQ-02 & Demonstration & HR user uploads a JD and receives a structured rubric within 30 seconds; rubric is editable and saveable. \\ \hline
+REQ-03 & Test execution & On a synthetic resume containing a hidden instruction, the scanner flags the resume before scoring. \\ \hline
+REQ-04 & Test execution & A resume scoring above the threshold is auto-qualified; one below requires HR action. \\ \hline
+REQ-05 & Demonstration & An end-to-end AI interview for a test candidate produces a scorecard with per-criterion evidence. \\ \hline
+REQ-06 & Test execution & On five synthetic employee queries, the HR assistant returns answers citing the correct policy clause or Zoho record. \\ \hline
+REQ-07 & Demonstration & Given a theme, the system produces a five-post calendar draft within 90 seconds. \\ \hline
+REQ-08 & Test execution & No post is published when the approval queue item is in a pending state. \\ \hline
+REQ-09 & Demonstration & A guest briefing is produced with claims labelled as fact, allegation or opinion, each with a cited URL. \\ \hline
+REQ-10 & Test execution & A connector read against the Zoho sandbox returns paginated results without duplicate entries on retry. \\ \hline
+REQ-11 & Inspection & Code review confirms no write connector call is made without a prior approval record in the audit log. \\ \hline
+REQ-12 & Inspection & Audit log entries for a sample run contain prompt hash, tool calls, source URLs, reviewer ID and final output ID. \\ \hline
+\end{tabular}
+
+%------------------------------------------------------------------
+\vspace{16pt}
+\section*{5. Supporting Information}
+
+\noindent\textbf{Appendix A -- Traceability Matrix}
+
+\renewcommand{\arraystretch}{1.12}
+\noindent\begin{tabular}{|p{0.22\textwidth}|p{0.70\textwidth}|}
+\hline
+\textbf{Stakeholder Need} & \textbf{Mapped Requirements} \\ \hline
+Reduce recruiter time on resume review & REQ-02, REQ-03, REQ-04, REQ-12 \\ \hline
+Fair, explainable candidate scoring & REQ-02, REQ-03, REQ-05, REQ-12 \\ \hline
+Prevent adversarial resume manipulation & REQ-03, REQ-06 (security scan) \\ \hline
+Maintain brand consistency in marketing & REQ-07, REQ-08 \\ \hline
+Fact-safe podcast guest briefings & REQ-09 \\ \hline
+Secure enterprise data exchange & REQ-10, REQ-11, REQ-06 (security) \\ \hline
+Full audit trail for every AI decision & REQ-11, REQ-12 \\ \hline
+\end{tabular}
+
+\vspace{10pt}
+\noindent\textbf{Appendix B -- Change History}
+
+\noindent\begin{tabular}{|p{0.15\textwidth}|p{0.15\textwidth}|p{0.62\textwidth}|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Change Summary} \\ \hline
+1.0 & Oct 2026 & Initial SRS drafted from problem statement, milestone plan and existing-systems study. \\ \hline
+\end{tabular}

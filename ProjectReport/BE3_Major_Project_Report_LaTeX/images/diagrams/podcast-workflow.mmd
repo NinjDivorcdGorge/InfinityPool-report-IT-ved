@@ -1,0 +1,3 @@
+flowchart LR
+    G["Enter guest name"] --> S["Collect public sources"] --> I["Chunk, embed and index"] --> R["Retrieve evidence by topic"]
+    R --> L["Label claims: fact, allegation or opinion"] --> GU["Sensitive-topic guardrails"] --> H["Host reviews briefing"] --> B["Prepare cited briefing"]

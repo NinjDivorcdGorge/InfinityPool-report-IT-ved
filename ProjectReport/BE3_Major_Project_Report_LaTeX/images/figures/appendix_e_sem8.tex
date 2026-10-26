@@ -1,0 +1,43 @@
+% Appendix E - Semester 8 Gantt Chart with Milestones
+% Requires: \usepackage{pgfgantt}
+
+\begin{ganttchart}[
+    time slot format=isodate,
+    x unit=0.063cm,
+    y unit chart=0.92cm,
+    hgrid,
+    vgrid={*{4}{draw=gray!20}},
+    title/.style={draw=none, fill=teal!12},
+    title label font=\small\bfseries,
+    bar/.style={fill=teal!45, draw=teal!70!black, rounded corners=2pt},
+    bar height=0.52,
+    bar label font=\footnotesize,
+    bar label node/.append style={text width=5.5cm, align=right},
+    group/.style={fill=teal!75!black},
+    group label font=\small\bfseries,
+    milestone/.style={fill=orange!90!black, draw=orange!60!black,
+                      shape=diamond, inner sep=2pt},
+    milestone height=0.55,
+    milestone label font=\footnotesize\bfseries,
+    milestone label node/.append style={text width=5.5cm, align=right},
+    canvas/.style={draw=gray!35}
+]{2027-01-01}{2027-04-30}
+
+\gantttitlecalendar{year, month=shortname} \\
+
+\ganttbar{Sensitive research guardrails}{2027-01-02}{2027-01-15} \\
+\ganttbar{Zoho Integration POC}{2027-01-16}{2027-01-29} \\
+\ganttmilestone{M7: Review 4 -- Podcast \& Zoho demo}{2027-01-29} \\
+\ganttbar{Workday / Greenhouse / generic HRMS POC}{2027-01-30}{2027-02-12} \\
+\ganttbar{Human-in-the-loop approval flow}{2027-02-13}{2027-02-26} \\
+\ganttmilestone{M8: Review 5 -- Integration demo}{2027-02-26} \\
+\ganttbar{Reusable business workflow framework}{2027-02-27}{2027-03-12} \\
+\ganttbar{Security, privacy \& audit logs}{2027-03-13}{2027-03-26} \\
+\ganttmilestone{M9: Review 6 -- Governance \& hardening}{2027-03-26} \\
+\ganttbar{Integrated demo dry run}{2027-03-27}{2027-04-09} \\
+\ganttmilestone{M10: Full integrated demo approved}{2027-04-09} \\
+\ganttbar{Final improvements}{2027-04-10}{2027-04-23} \\
+\ganttbar{Final presentation \& handover}{2027-04-24}{2027-04-30} \\
+\ganttmilestone{M11: Project complete \& submitted}{2027-04-30}
+
+\end{ganttchart}

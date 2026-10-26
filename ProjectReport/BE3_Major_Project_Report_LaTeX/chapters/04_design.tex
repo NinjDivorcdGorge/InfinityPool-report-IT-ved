@@ -1,0 +1,221 @@
+%==================== CHAPTER 4 ====================
+\ChapterPage{Design Of the System}
+
+\section{System architecture}
+
+\subsection{Data Flow Diagrams}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \node[diagramactor,text width=2.7cm] (hr) at (-5,2.2) {HR recruiter\\Jobs, rubric review};
+    \node[diagramactor,text width=2.7cm] (candidate) at (-5,0) {Candidate\\Resume, interview};
+    \node[diagramactor,text width=2.7cm] (business) at (-5,-2.2) {Marketing and research\\Themes, guest names};
+    \node[diagrambox,text width=4.1cm,minimum height=2.4cm] (system) at (0,0)
+      {\textbf{Business Function}\\\textbf{Agentic Workflows}\\Routing, agents, guardrails};
+    \node[diagramactor,text width=2.7cm] (enterprise) at (5,2.2) {Enterprise systems\\Zoho, HRMS, ATS};
+    \node[diagramactor,text width=2.7cm] (models) at (5,0) {AI providers\\Gemini, OpenAI, Ollama};
+    \node[diagramactor,text width=2.7cm] (channels) at (5,-2.2) {Communication channels\\Email, social platforms};
+    \draw[diagramarrow,<->] (hr.east) -- (system.west);
+    \draw[diagramarrow,<->] (candidate.east) -- (system.west);
+    \draw[diagramarrow,<->] (business.east) -- (system.west);
+    \draw[diagramarrow,<->] (system.east) -- (enterprise.west);
+    \draw[diagramarrow,<->] (system.east) -- (models.west);
+    \draw[diagramarrow,<->] (system.east) -- (channels.west);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.1.1 DFD Level 0 of the System}}
+\end{bodyfigure}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \node[diagrambox,text width=3.1cm] (router) at (0,3.1) {1.0 Workflow router\\Request classification};
+    \node[diagrambox,text width=2.7cm] (hr) at (-5.1,1) {2.0 HR workflows\\Recruitment, HR assistant};
+    \node[diagrambox,text width=2.7cm] (marketing) at (-1.7,1) {3.0 Marketing\\Calendar, drafts};
+    \node[diagrambox,text width=2.7cm] (podcast) at (1.7,1) {4.0 Podcast research\\Sources, briefings};
+    \node[diagrambox,text width=2.7cm] (integration) at (5.1,1) {5.0 Integrations\\Read, sync, write};
+    \node[diagrambox,text width=3.5cm] (review) at (0,-1.2) {6.0 Compliance and human approval\\Guardrails, reviewer decision};
+    \node[diagramdata,text width=3.5cm] (jobs) at (-4,-3.2) {D1 Jobs and rubrics\\D2 Candidates and scores};
+    \node[diagramdata,text width=3.5cm] (knowledge) at (0,-3.2) {D3 Content and reports\\D4 Knowledge base};
+    \node[diagramdata,text width=3.5cm] (audit) at (4,-3.2) {D5 Audit log\\Workflow and reviewer events};
+    \draw[thick,draw=blue!65!black] (router.south) -- (0,2.15);
+    \draw[thick,draw=blue!65!black] (-5.1,2.15) -- (5.1,2.15);
+    \foreach \x in {-5.1,-1.7,1.7,5.1}
+      \draw[diagramarrow] (\x,2.15) -- (\x,1.55);
+    \foreach \x in {-5.1,-1.7,1.7,5.1}
+      \draw[thick,draw=blue!65!black] (\x,0.45) -- (\x,-0.15);
+    \draw[thick,draw=blue!65!black] (-5.1,-0.15) -- (5.1,-0.15);
+    \draw[diagramarrow] (0,-0.15) -- (review.north);
+    \draw[thick,draw=blue!65!black] (review.south) -- (0,-2.3);
+    \draw[thick,draw=blue!65!black] (-4,-2.3) -- (4,-2.3);
+    \foreach \x in {-4,0,4}
+      \draw[diagramarrow] (\x,-2.3) -- (\x,-2.8);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.1.2 DFD Level 1 of the System}}
+\end{bodyfigure}
+
+\clearpage
+\subsection{UI/UX Diagram}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \tikzset{screen/.style={
+      draw=blue!55!black, rounded corners=3pt, fill=blue!3,
+      text width=5.3cm, minimum height=1.35cm, align=left,
+      inner sep=7pt, font=\small
+    }}
+    \node[diagrambox,text width=11.7cm,minimum height=0.8cm] (shell) at (0,3.1)
+      {\textbf{Business Function Agentic Workflows} \hspace{1em} Dashboard \quad Jobs \quad Approvals \quad Audit};
+    \node[screen] (hr) at (-3.1,1.35) {\textbf{HR recruitment}\\Jobs, rubric approval, candidate scores and evidence};
+    \node[screen] (marketing) at (3.1,1.35) {\textbf{Marketing}\\Content calendar, channel drafts and approval queue};
+    \node[screen] (research) at (-3.1,-0.45) {\textbf{Podcast research}\\Guest briefing with source citations and claim labels};
+    \node[screen] (integration) at (3.1,-0.45) {\textbf{Integrations}\\Connector status, authorised accounts and sync history};
+    \node[screen] (review) at (-3.1,-2.25) {\textbf{Human review}\\Pending items with approve, edit and reject actions};
+    \node[screen] (audit) at (3.1,-2.25) {\textbf{Audit log}\\Workflow history, actions, sources and reviewer};
+    \draw[thick,draw=blue!65!black] (shell.south) -- (0,2.35);
+    \draw[thick,draw=blue!65!black] (-3.1,2.35) -- (3.1,2.35);
+    \draw[diagramarrow] (-3.1,2.35) -- (hr.north);
+    \draw[diagramarrow] (3.1,2.35) -- (marketing.north);
+    \draw[diagramarrow] (hr.south) -- (research.north);
+    \draw[diagramarrow] (marketing.south) -- (integration.north);
+    \draw[diagramarrow] (research.south) -- (review.north);
+    \draw[diagramarrow] (integration.south) -- (audit.north);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.1 UI/UX Diagram of the System}}
+\end{bodyfigure}
+
+\clearpage
+\subsection{Block Diagram}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \node[diagramactor,text width=11.8cm] (users) at (0,6.3)
+      {Users: HR, candidates, marketing, podcast research and administrators};
+    \node[diagrambox,text width=11.8cm] (dashboard) at (0,4.9)
+      {Web dashboard and public application pages\\Next.js and React};
+    \node[diagrambox,text width=11.8cm] (router) at (0,3.5)
+      {Workflow routing and orchestration\\Request validation, routing and state};
+    \node[diagramdata,text width=5.2cm] (ai) at (-3,2.1)
+      {AI provider layer\\Gemini, OpenAI and Ollama};
+    \node[diagramdata,text width=5.2cm] (rag) at (3,2.1)
+      {Knowledge and retrieval layer\\Policies, brand memory and pgvector};
+    \node[diagrambox,text width=2.7cm] (hr) at (-5.1,0.1) {HR agents\\Rubric, screening, interview};
+    \node[diagrambox,text width=2.7cm] (marketing) at (-1.7,0.1) {Marketing agents\\Calendar, drafts};
+    \node[diagrambox,text width=2.7cm] (podcast) at (1.7,0.1) {Research agents\\Sources, briefings};
+    \node[diagrambox,text width=2.7cm] (integration) at (5.1,0.1) {Integration agent\\Connectors, sync};
+    \node[diagrambox,text width=11.8cm] (guardrails) at (0,-1.5)
+      {Compliance reviewer and guardrails\\PII handling, injection checks and evidence validation};
+    \node[diagrambox,text width=11.8cm] (approval) at (0,-2.9)
+      {Human approval gate\\Review, edit, approve or reject consequential actions};
+    \node[diagrambox,text width=11.8cm] (connectors) at (0,-4.3)
+      {Connector layer\\Zoho, HRMS / ATS, email, calendar and social platforms};
+    \node[diagramdata,text width=11.8cm] (storage) at (0,-5.7)
+      {Supabase data store and audit layer\\Jobs, candidates, scores, drafts, reports and workflow events};
+    \draw[diagramarrow] (users) -- (dashboard);
+    \draw[diagramarrow] (dashboard) -- (router);
+    \draw[diagramarrow] (router.south) -- (ai.north);
+    \draw[diagramarrow] (router.south) -- (rag.north);
+    \draw[thick,draw=blue!65!black] (ai.south) -- (-3,1.15);
+    \draw[thick,draw=blue!65!black] (rag.south) -- (3,1.15);
+    \draw[thick,draw=blue!65!black] (-3,1.15) -- (3,1.15);
+    \foreach \x in {-5.1,-1.7,1.7,5.1}
+      \draw[diagramarrow] (\x,1.15) -- (\x,0.65);
+    \foreach \x in {-5.1,-1.7,1.7,5.1}
+      \draw[thick,draw=blue!65!black] (\x,-0.45) -- (\x,-0.95);
+    \draw[thick,draw=blue!65!black] (-5.1,-0.95) -- (5.1,-0.95);
+    \draw[diagramarrow] (0,-0.95) -- (guardrails.north);
+    \draw[diagramarrow] (guardrails) -- (approval);
+    \draw[diagramarrow] (approval) -- (connectors);
+    \draw[diagramarrow] (connectors) -- (storage);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.2 Block Diagram of the System}}
+\end{bodyfigure}
+
+\clearpage
+\subsection{Agent Workflow Diagrams}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \tikzset{workflowstep/.style={diagrambox,text width=2.45cm,minimum height=1.15cm}}
+    \node[workflowstep] (jd) at (-5.5,1.7) {HR submits job description};
+    \node[workflowstep] (rubric) at (-1.85,1.7) {AI generates weighted rubrics};
+    \node[workflowstep] (rubricreview) at (1.85,1.7) {HR reviews and approves rubric};
+    \node[workflowstep] (publish) at (5.5,1.7) {Publish job and save rubric};
+    \draw[diagramarrow] (jd) -- (rubric);
+    \draw[diagramarrow] (rubric) -- (rubricreview);
+    \draw[diagramarrow] (rubricreview) -- (publish);
+    \node[workflowstep] (decision) at (-6.2,-0.7) {HR makes final hiring decision};
+    \node[workflowstep] (ranking) at (-3.1,-0.7) {AI interview and final ranking};
+    \node[workflowstep] (interview) at (0,-0.7) {Interview invitation and interview};
+    \node[workflowstep] (gate) at (3.1,-0.7) {HR review or threshold-based approval};
+    \node[workflowstep] (screen) at (6.2,-0.7) {Candidate applies; resume is screened};
+    \draw[diagramarrow] (publish.south) -- (screen.north);
+    \draw[diagramarrow] (screen) -- (gate);
+    \draw[diagramarrow] (gate) -- (interview);
+    \draw[diagramarrow] (interview) -- (ranking);
+    \draw[diagramarrow] (ranking) -- (decision);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.3.1 HR Agent Workflow of the System}}
+\end{bodyfigure}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \tikzset{workflowstep/.style={diagrambox,text width=2.55cm,minimum height=1.15cm}}
+    \node[workflowstep] (theme) at (-5.5,1.2) {Theme or source content};
+    \node[workflowstep] (brand) at (-1.85,1.2) {Retrieve brand memory};
+    \node[workflowstep] (calendar) at (1.85,1.2) {Build calendar and briefs};
+    \node[workflowstep] (drafts) at (5.5,1.2) {Generate channel drafts};
+    \draw[diagramarrow] (theme) -- (brand);
+    \draw[diagramarrow] (brand) -- (calendar);
+    \draw[diagramarrow] (calendar) -- (drafts);
+    \node[workflowstep] (metrics) at (-3.7,-1.2) {Track status and performance};
+    \node[workflowstep] (publish) at (0,-1.2) {Publish through connectors};
+    \node[workflowstep] (approval) at (3.7,-1.2) {Human approval queue};
+    \draw[diagramarrow] (drafts.south) -- (approval.north);
+    \draw[diagramarrow] (approval) -- (publish);
+    \draw[diagramarrow] (publish) -- (metrics);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.3.2 Marketing Agent Workflow of the System}}
+\end{bodyfigure}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \tikzset{workflowstep/.style={diagrambox,text width=2.55cm,minimum height=1.15cm}}
+    \node[workflowstep] (guest) at (-5.5,1.2) {Enter guest name};
+    \node[workflowstep] (sources) at (-1.85,1.2) {Collect public sources};
+    \node[workflowstep] (index) at (1.85,1.2) {Chunk, embed and index};
+    \node[workflowstep] (retrieve) at (5.5,1.2) {Retrieve evidence by topic};
+    \draw[diagramarrow] (guest) -- (sources);
+    \draw[diagramarrow] (sources) -- (index);
+    \draw[diagramarrow] (index) -- (retrieve);
+    \node[workflowstep] (brief) at (-5.5,-1.2) {Prepare cited briefing};
+    \node[workflowstep] (host) at (-1.85,-1.2) {Host reviews briefing};
+    \node[workflowstep] (guard) at (1.85,-1.2) {Sensitive-topic guardrails};
+    \node[workflowstep] (labels) at (5.5,-1.2) {Label claims: fact, allegation or opinion};
+    \draw[diagramarrow] (retrieve.south) -- (labels.north);
+    \draw[diagramarrow] (labels) -- (guard);
+    \draw[diagramarrow] (guard) -- (host);
+    \draw[diagramarrow] (host) -- (brief);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.3.3 Podcast Research Workflow of the System}}
+\end{bodyfigure}
+
+\begin{bodyfigure}
+  \begin{tikzpicture}
+    \tikzset{workflowstep/.style={diagrambox,text width=2.55cm,minimum height=1.15cm}}
+    \node[workflowstep] (request) at (-5.5,1.2) {Workflow requests a sync};
+    \node[workflowstep] (auth) at (-1.85,1.2) {Scoped OAuth authentication};
+    \node[workflowstep] (fetch) at (1.85,1.2) {Paginated, rate-limited fetch};
+    \node[workflowstep] (normalize) at (5.5,1.2) {Normalize to common data model};
+    \draw[diagramarrow] (request) -- (auth);
+    \draw[diagramarrow] (auth) -- (fetch);
+    \draw[diagramarrow] (fetch) -- (normalize);
+    \node[workflowstep] (audit) at (-5.5,-1.2) {Audit each workflow step};
+    \node[workflowstep] (webhook) at (-1.85,-1.2) {Webhook triggers next workflow};
+    \node[workflowstep] (write) at (1.85,-1.2) {Approved write with retry and idempotency};
+    \node[workflowstep] (approval) at (5.5,-1.2) {Human approval for writes};
+    \draw[diagramarrow] (normalize.south) -- (approval.north);
+    \draw[diagramarrow] (approval) -- (write);
+    \draw[diagramarrow] (write) -- (webhook);
+    \draw[diagramarrow] (webhook) -- (audit);
+  \end{tikzpicture}
+  \caption{\textbf{Figure 4.2.3.4 Enterprise Integration Workflow of the System}}
+\end{bodyfigure}

@@ -1,0 +1,52 @@
+% Appendix E - Semester 7 Gantt Chart with Milestones
+% Requires: \usepackage{pgfgantt}
+
+\begin{ganttchart}[
+    time slot format=isodate,
+    x unit=0.052cm,
+    y unit chart=0.80cm,
+    hgrid,
+    vgrid={*{6}{draw=gray!20}},
+    title/.style={draw=none, fill=blue!12},
+    title label font=\small\bfseries,
+    bar/.style={fill=blue!50, draw=blue!75!black, rounded corners=2pt},
+    bar height=0.52,
+    bar label font=\footnotesize,
+    bar label node/.append style={text width=5.5cm, align=right},
+    group/.style={fill=blue!75!black},
+    group label font=\small\bfseries,
+    milestone/.style={fill=orange!90!black, draw=orange!60!black,
+                      shape=diamond, inner sep=2pt},
+    milestone height=0.55,
+    milestone label font=\footnotesize\bfseries,
+    milestone label node/.append style={text width=5.5cm, align=right},
+    today=2026-10-26,
+    today label=Today,
+    today label font=\tiny\color{red!70!black},
+    today rule/.style={draw=red!65!black, dashed, line width=0.8pt},
+    canvas/.style={draw=gray!35}
+]{2026-07-11}{2026-12-31}
+
+\gantttitlecalendar{year, month=shortname} \\
+
+\ganttbar{Environment, Python \& GitHub setup}{2026-07-11}{2026-07-24} \\
+\ganttbar{AI coding tools}{2026-07-25}{2026-07-31} \\
+\ganttmilestone{M1: Dev environment ready}{2026-07-31} \\
+\ganttbar{LLM foundations}{2026-08-01}{2026-08-14} \\
+\ganttbar{Agentic workflow foundations}{2026-08-15}{2026-08-28} \\
+\ganttmilestone{M2: Agent framework POC}{2026-08-28} \\
+\ganttbar{RAG, vector stores \& memory}{2026-08-29}{2026-09-11} \\
+\ganttbar{n8n \& webhook automation}{2026-09-12}{2026-09-25} \\
+\ganttmilestone{M3: RAG pipeline working}{2026-09-25} \\
+\ganttbar{Deployment, logging \& secrets}{2026-09-26}{2026-10-09} \\
+\ganttbar{Delivery kickoff \& use-case mapping}{2026-10-10}{2026-10-23} \\
+\ganttmilestone{M4: Review 1 -- learning phase complete}{2026-10-23} \\
+\ganttbar{HR Workflow Expansion v1}{2026-10-24}{2026-11-06} \\
+\ganttbar{HR Follow-up \& Evaluation Agent}{2026-11-07}{2026-11-20} \\
+\ganttmilestone{M5: Review 2 -- HR workflow demo}{2026-11-20} \\
+\ganttbar{Marketing Workflow Expansion v1}{2026-11-21}{2026-12-04} \\
+\ganttbar{Marketing Analytics \& Repurposing Agent}{2026-12-05}{2026-12-18} \\
+\ganttmilestone{M6: Review 3 -- Marketing workflow demo}{2026-12-18} \\
+\ganttbar{Podcast Guest Background Report Agent v1}{2026-12-19}{2026-12-31}
+
+\end{ganttchart}

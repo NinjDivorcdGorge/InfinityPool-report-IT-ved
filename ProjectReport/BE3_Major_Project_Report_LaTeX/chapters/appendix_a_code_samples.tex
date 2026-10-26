@@ -1,0 +1,164 @@
+%==================== APPENDIX A: CODE SAMPLES ====================
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendix A: Code Samples}
+\begin{center}
+  {\LARGE\bfseries Appendix A: Code Samples\par}
+\end{center}
+\vspace{18pt}
+\setcounter{lstlisting}{0}
+\renewcommand{\thelstlisting}{A.\arabic{lstlisting}}
+
+\noindent The following excerpts illustrate the core rubric-generation,
+resume-screening, persistence and approval-routing logic used by the system.
+
+\phantomsection
+\noindent\textbf{A.1 Rubric Generation from Job Description}\par\vspace{8pt}
+\begin{lstlisting}[language=TypeScript, caption={Generating and validating a structured rubric}]
+export async function generateJDRubric(
+  jobDescription: string
+): Promise<JDRubric> {
+  const trimmed = jobDescription?.trim();
+  if (!trimmed || trimmed.length < 10) {
+    throw new Error("Job description must be at least 10 characters long.");
+  }
+
+  try {
+    const prompt = `
+      Analyze the job description and return a JSON rubric containing:
+      role_title, category, experience_years_required,
+      must_have_skills, nice_to_have_skills, resume_rubric,
+      and interview_rubric. Each rubric has 3-5 criteria whose
+      integer weights sum to 100, with observable key indicators.
+
+      JOB DESCRIPTION:
+      ---
+      ${trimmed}
+      ---
+    `;
+
+    const generated = await generateStructuredJSON<JDRubric>(
+      "You are an expert talent acquisition specialist. Return a structured rubric as JSON.",
+      prompt,
+      { temperature: 0.0 }
+    );
+
+    const validation = JDRubricSchema.safeParse(generated);
+    if (validation.success) {
+      const rubric = validation.data;
+      rubric.resume_rubric = normalizeRubricWeights(rubric.resume_rubric);
+      rubric.interview_rubric = normalizeRubricWeights(rubric.interview_rubric);
+      return rubric;
+    }
+  } catch (error) {
+    console.warn("Rubric generation failed; using the deterministic fallback.", error);
+  }
+
+  return generateMockJDRubric(trimmed);
+}
+\end{lstlisting}
+
+\phantomsection
+\noindent\textbf{A.2 Resume Screening and Score Storage}\par\vspace{8pt}
+\begin{lstlisting}[language=TypeScript, caption={Scoring a resume and persisting its result}]
+const result = await generateStructuredJSON<Record<string, unknown>>(
+  SYSTEM_SCREENING_PROMPT,
+  buildCandidateScreeningPrompt(job, candidate, rubric, candidateName, expYears),
+  { temperature: 0.1 }
+);
+
+const rubricScores =
+  result.rubric_scores && typeof result.rubric_scores === "object"
+    ? result.rubric_scores as Record<string, number>
+    : {};
+
+const score = calculateHybridScore(rubricScores, rubric);
+
+const { data, error } = await supabase
+  .from("applications")
+  .update({
+    resume_rank_score: score,
+    resume_breakdown_json: { rubric_scores: rubricScores },
+    recruiter_notes: String(result.overall_summary ?? ""),
+  })
+  .eq("job_id", jobId)
+  .eq("candidate_id", candidateId)
+  .neq("status", "rejected")
+  .is("deleted_at", null)
+  .select("id");
+
+if (error) {
+  throw new Error(`Could not save screening result: ${error.message}`);
+}
+if (!data?.length) {
+  throw new Error("No eligible application was found to update.");
+}
+
+const { error: statusError } = await supabase
+  .from("applications")
+  .update({ status: "in_progress" })
+  .eq("id", data[0].id)
+  .eq("current_round", "Resume Screening");
+
+if (statusError) {
+  throw new Error(`Could not update application status: ${statusError.message}`);
+}
+\end{lstlisting}
+
+\phantomsection
+\noindent\textbf{A.3 Workflow Router and Approval Gate}\par\vspace{8pt}
+\begin{lstlisting}[language=TypeScript, caption={Routing HR decisions and gating interview approval}]
+const body = await req.json();
+const { jobId, decision, notes } = body;
+
+if (!jobId || !["approved", "rejected", "pending"].includes(decision)) {
+  return NextResponse.json({ success: false, error: "Invalid decision." }, { status: 400 });
+}
+
+const company = await getCurrentHrCompany();
+if (!company) {
+  return NextResponse.json({ success: false, error: "HR access required." }, { status: 403 });
+}
+if (!await ownsCompanyApplication(company.companyId, jobId, candidateId)) {
+  return NextResponse.json({ success: false, error: "Application not found." }, { status: 404 });
+}
+
+if (decision === "approved") {
+  const approval = await approveApplicationAndNotify({ jobId, candidateId, notes });
+  if (!approval.transitioned && !approval.alreadyInInterview) {
+    return NextResponse.json(
+      { success: false, error: approval.failureReason },
+      { status: 409 }
+    );
+  }
+} else {
+  await updateApplicationDecision(jobId, candidateId, decision, notes);
+}
+
+// Automatic approval is requested only after a successful screening score
+// exceeds the job's configured threshold.
+if (
+  !evaluation.ai_failed &&
+  Number.isFinite(evaluation.internal_score) &&
+  evaluation.internal_score > job.auto_approve_threshold
+) {
+  await approveApplicationAndNotify({
+    jobId,
+    candidateId: evaluation.candidate_id,
+    automatic: true,
+  });
+}
+
+// The approval service claims the transition transactionally before sending
+// the invitation. Automatic approvals require an open job and eligible round.
+const claim = await claimApplicationForInterview({
+  jobId,
+  candidateId,
+  notes,
+  automatic,
+});
+
+if (claim.kind === "transitioned") {
+  await sendCandidateApprovalEmail({ jobId, candidateId });
+}
+\end{lstlisting}

@@ -1,0 +1,14 @@
+flowchart TB
+    S["Business Function Agentic Workflows Dashboard"]
+    HR["HR recruitment<br/>Jobs, rubric approval, candidate scores and evidence"]
+    M["Marketing<br/>Content calendar, channel drafts and approval queue"]
+    R["Podcast research<br/>Guest briefing with source citations and claim labels"]
+    I["Integrations<br/>Connector status, authorised accounts and sync history"]
+    REV["Human review<br/>Pending items with approve, edit and reject actions"]
+    AUD["Audit log<br/>Workflow history, actions, sources and reviewer"]
+    S --> HR
+    S --> M
+    HR --> R
+    M --> I
+    R --> REV
+    I --> AUD

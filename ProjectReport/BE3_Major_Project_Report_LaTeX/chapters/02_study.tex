@@ -1,0 +1,85 @@
+﻿%==================== CHAPTER 2 ====================
+\ChapterPage{Study Of the System}
+
+\section{Literature Survey}
+
+Building an agentic AI platform for business functions means drawing on work from several overlapping areas of research. We looked at how multi-agent frameworks are structured, how AI has been applied to hiring and whether it can be trusted to do so fairly, how marketing content generation and hallucination reduction have been approached, and what the state of the art says about tool use, privacy and governance. The picture that emerges is one of genuine progress alongside well-documented gaps, and those gaps are what this project tries to close.
+
+\vspace{10pt}
+\noindent\textbf{Multi-Agent Orchestration.}
+Wu et al.\ \cite{autogen} introduced AutoGen, a framework that lets developers compose applications from multiple agents, each backed by an LLM, a human or an external tool. Guo et al.\ \cite{guo} followed with a broad survey of LLM-based multi-agent systems, covering how agents are profiled, how they communicate and how their capabilities develop over time. Yao et al.\ \cite{react} showed that alternating between reasoning steps and tool actions produces better results than either alone. What none of these works provide is a ready-made path to a governed, domain-specific business workflow. They give us building blocks, but the plumbing for rubric-based scoring, human approval gates and decision-level audit logs still has to be designed from scratch.
+
+\vspace{10pt}
+\noindent\textbf{AI-Powered Recruitment and Bias.}
+The recruitment literature makes a sobering case for caution. Gan et al.\ \cite{gan} showed that an LLM-based pipeline can screen resumes eleven times faster than a human and reach a respectable F1 score, but their system was tested only on IT-sector data and could not generate rubrics from a job description or conduct an interview. Wilson and Caliskan \cite{wilson} found that embedding-based screening favoured White-associated names in 85 out of every 100 cases and that Black male candidates were disadvantaged in up to 100\% of test cases. Mu et al.\ \cite{mu} then showed that adversarial content hidden inside a resume could manipulate LLM screening more than 80\% of the time, and that the best available defences reduced this by only around a quarter. Stuart et al.\ \cite{stuart} took things further by building an AI interviewer that updates its belief about a candidate's competencies after each answer, recovering accurate ability profiles with 76.1\% accuracy. Together these papers describe a picture where AI recruitment tools can save time but cannot yet be trusted without human oversight, bias monitoring and adversarial scanning at every step.
+
+\vspace{10pt}
+\noindent\textbf{Content Generation and Marketing.}
+Liu et al.\ \cite{marketingfm} demonstrated that retrieval-augmented generation can produce keyword-specific ad copy that outperforms template-based content in online A/B tests, with an automated evaluation approach that agrees with human reviewers nearly 90\% of the time. The limitation is scope: the system was designed for search advertising rather than for brand-consistent posts across multiple social channels, and it does not include an approval step before content goes live. Our marketing workflow extends the RAG-based generation idea to channel-specific branded content and adds an explicit queue where a human must approve every draft before it is published.
+
+\vspace{10pt}
+\noindent\textbf{Retrieval-Augmented Generation and Hallucination Reduction.}
+Asai et al.\ \cite{selfrag} trained a model to decide for itself when to retrieve and to critique its own outputs using special reflection tokens, producing better factuality scores than baseline retrieval-augmented approaches. Dhuliawala et al.\ \cite{cove} took a different route, using the model to draft an answer, generate verification questions and then revise the answer based on the results, reducing hallucinations on several benchmarks. Both approaches have a real limitation in practice: they either need custom training or rely solely on what the model already knows, without the ability to consult an external source for a recent or obscure fact about a real person. Our podcast research agent borrows the retrieve-then-verify idea and applies it through prompting, requiring a public source for every claim and labelling each one as a verified fact, an allegation or an opinion before anything reaches the host.
+
+\vspace{10pt}
+\noindent\textbf{Tool Use and Enterprise API Integration.}
+Schick et al.\ \cite{toolformer} showed that a language model can learn which API to call and when, purely from a small number of demonstrations, without supervised training. Patil et al.\ \cite{gorilla} went further, fine-tuning a model to write accurate API calls even when the documentation changes after training. Both results are impressive, but neither system can chain multiple authenticated calls, handle rate limits or decide whether a particular write operation should require human approval before it goes through. Enterprise integrations with Zoho, Workday and Greenhouse require all of these things, which is why our connector layer adds OAuth scopes, retries, idempotency keys and a mandatory approval step for any call that writes data.
+
+\vspace{10pt}
+\noindent\textbf{Privacy and Governance.}
+Lukas et al.\ \cite{lukas} measured how much personally identifiable information can leak from a language model and found that even techniques like differential privacy leave roughly 3\% of PII sequences exposed. M\"{o}kander et al.\ \cite{mokander} proposed a governance blueprint for LLMs that operates at the organisational, model and application levels, but left the question of how to implement application-level auditing in software to the reader. Our system addresses the run-time PII risk directly by redacting candidate data before any LLM call and restricting what appears in logs. The application audit layer is not a design concept here but a concrete implementation: every prompt, tool call, source, draft version, reviewer decision and final output is stored and traceable.
+
+\clearpage
+\section{Existing Systems}
+
+A number of commercial tools already address parts of the problem this project is trying to solve. Looking at them side by side makes the gap clearer.
+
+\vspace{8pt}
+\noindent\textbf{HireVue AI Interviewer} runs two-way structured interviews and scores responses against role-specific criteria with explanations. It does one thing well but nothing else. It does not generate rubrics from a job description, it does not check resume claims for accuracy, and marketing or research workflows are completely outside its scope. Because it is proprietary, its design cannot be studied or extended.
+
+\vspace{8pt}
+\noindent\textbf{Greenhouse AI Recruiting} is built around structured hiring processes. Its AI features handle resume parsing with anonymisation, generate interview stages and produce scorecard summaries. The AI is there to support a human interviewer, not to run a pipeline end to end. There is no evidence verification against external sources, and nothing in the platform touches marketing or research.
+
+\vspace{8pt}
+\noindent\textbf{Zoho Recruit with Zia} does a good job of matching candidates to jobs, drafting job descriptions and emails, and summarising recorded interview transcripts. What it cannot do is conduct a live adaptive AI interview, produce rubric-based scores with cited evidence and an approval gate, or handle any workflow outside recruiting.
+
+\vspace{8pt}
+\noindent\textbf{Jasper} is a capable marketing workspace that stores brand voice, style guides and audience profiles and uses them to guide content generation. Its coverage is marketing only. Its governance and approval workflows are not publicly documented, and it does not produce source-cited research briefings of any kind.
+
+\vspace{8pt}
+\noindent\textbf{n8n} is a flexible workflow automation platform with a visual builder and a large library of integrations including AI-agent nodes. It is an excellent toolkit but it is only a toolkit. Domain-specific logic for HR scoring, brand rules, research guardrails, PII redaction and claim labelling all have to be built separately by whoever sets it up.
+
+\vspace{8pt}
+\noindent\textbf{Perplexity Deep Research} is a fast and thorough general-purpose research tool. It does not format its output for a podcast host, it does not label claims as facts, allegations or opinions, and it provides no approval step or audit trail before a report is used.
+
+\vspace{10pt}
+\noindent The research literature summary table follows on the next page.
+
+\clearpage
+{\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{3.75cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{3.4cm}|}
+\hline
+\textbf{S.no} & \textbf{Paper} & \textbf{Main Idea / Objective} & \textbf{Tools / Tech Used} & \textbf{Gaps Identified}\\ \hline
+\endfirsthead
+\hline
+\textbf{S.no} & \textbf{Paper} & \textbf{Main Idea / Objective} & \textbf{Tools / Tech Used} & \textbf{Gaps Identified}\\ \hline
+\endhead
+\caption{Summary of Related Research Papers}\label{tab:lit}\\
+\endlastfoot
+1 & AutoGen (2024) & Framework for building applications from multiple conversable agents that combine LLMs, humans and tools. & Multi-agent conversation framework; human-in-the-loop support. & General-purpose; no HR or marketing workflow, rubric scoring, approval gates or audit design.\\ \hline
+2 & LLM Based Multi-Agents: A Survey (2024) & Reviews domains, agent profiling, communication, capability growth and benchmarks of LLM multi-agent systems. & Systematic literature review; open-source tracking repository. & Survey only; no concrete business-function system, governance or integration.\\ \hline
+3 & ReAct (2023) & Interleaves reasoning traces with tool actions to reduce hallucination and improve decision-making. & Few-shot prompting; Wikipedia API; HotpotQA, FEVER, ALFWorld, WebShop. & Single agent with read-only tools; no approval or audit for actions with real effects.\\ \hline
+4 & LLM Agents in Recruitment (2024) & Agent pipeline that classifies, grades, summarises and selects resumes. & Fine-tuned LLaMA2; GPT-3.5 and GPT-4 baselines; BERT, T5. & IT resumes only; labels mostly from GPT-4; no JD-to-rubric generation or interview stage.\\ \hline
+5 & Bias in Resume Screening via LM Retrieval (2024) & Audits embedding-based screening for gender, race and intersectional bias. & Massive Text Embedding models; retrieval-based audit on 500+ resumes. & Measures bias; proposes no bias-aware screening or human review step.\\ \hline
+6 & Adversarial Vulnerabilities in Resume Screening (2025) & Shows hidden instructions and invisible content can manipulate LLM screening. & 12 LLM variants; prompt defence; FIDS (LoRA). & Defences cut attacks by only 10--26\%; no pipeline-level scanning or human checkpoint.\\ \hline
+7 & Beyond the Resum\'e (2026) & Rubric-aware LLM interviewer that updates beliefs about competencies after each answer. & GPT-5; belief updating; metamorphic testing; Chainlit. & Simulated interviews only; three-level rubrics; no rubric generation, ATS link or HR approval.\\ \hline
+8 & LLMs for Marketing Content Generation (2025) & Generates keyword-specific ad copy and evaluates it at scale. & RAG; LLM-as-a-Judge; rule-based metrics; A/B testing. & Ad copy only; no multi-channel brand posts or approval workflow.\\ \hline
+9 & Self-RAG (2024) & Model learns when to retrieve and critiques its own output with reflection tokens. & Fine-tuned Llama2 7B/13B; retriever; reflection tokens. & Needs custom training; not evaluated on high-risk research about real people.\\ \hline
+10 & Chain-of-Verification (2024) & Drafts, plans and answers verification questions, then revises to reduce hallucination. & Multi-stage prompting; factored verification. & Uses only the model's own knowledge; no external sources or claim labels.\\ \hline
+11 & Toolformer (2023) & LLM teaches itself when and how to call external APIs. & GPT-J 6.7B; self-supervised API-call annotation. & One call per example; no tool chaining, authentication or write actions.\\ \hline
+12 & Gorilla (2024) & Fine-tuned LLM writes accurate API calls with retrieval over documentation. & LLaMA-7B; BM25 and GPT-Index retrievers; APIBench; AST matching. & Public ML APIs only; ignores permissions, PII and approval of write operations.\\ \hline
+13 & PII Leakage in Language Models (2023) & Defines and measures PII extraction, reconstruction and inference attacks. & GPT-2 fine-tuning; black-box attacks; differential privacy. & Covers training-data leakage; not PII in run-time prompts, logs and tools.\\ \hline
+14 & Auditing LLMs: A Three-Layered Approach (2024) & Blueprint of governance, model and application audits for LLMs. & Conceptual governance framework. & Conceptual; no implementation of application-level audit trails.\\ \hline
+\end{longtable}
+}

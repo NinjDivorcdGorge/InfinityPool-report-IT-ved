@@ -1,0 +1,12 @@
+flowchart TB
+    R["Workflow router<br/>Request classification"] --> H["HR workflows<br/>Recruitment, HR assistant"]
+    R --> M["Marketing<br/>Calendar, drafts"]
+    R --> P["Podcast research<br/>Sources, briefings"]
+    R --> I["Integrations<br/>Read, sync, write"]
+    H --> V["Compliance and approval<br/>Guardrails, reviewer decision"]
+    M --> V
+    P --> V
+    I --> V
+    V --> J["Jobs and rubrics<br/>Candidates and scores"]
+    V --> K["Content and reports<br/>Knowledge base"]
+    V --> A["Audit log<br/>Workflow events"]

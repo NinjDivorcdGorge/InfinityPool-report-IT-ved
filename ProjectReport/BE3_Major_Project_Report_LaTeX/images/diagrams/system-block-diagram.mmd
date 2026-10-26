@@ -1,0 +1,16 @@
+flowchart TD
+    U["Users: HR, candidates, marketing, podcast research and administrators"] --> D["Web dashboard and public application pages<br/>Next.js and React"]
+    D --> R["Workflow routing and orchestration<br/>Request validation, routing and state"]
+    R --> AI["AI provider layer<br/>Gemini, OpenAI and Ollama"]
+    R --> KG["Knowledge and retrieval layer<br/>Policies, brand memory and pgvector"]
+    AI --> H["HR agents<br/>Rubric, screening, interview"]
+    AI --> M["Marketing agents<br/>Calendar, drafts"]
+    AI --> P["Research agents<br/>Sources, briefings"]
+    AI --> IN["Integration agent<br/>Connectors, sync"]
+    H --> G["Compliance reviewer and guardrails<br/>PII handling, injection checks and evidence validation"]
+    M --> G
+    P --> G
+    IN --> G
+    G --> A["Human approval gate<br/>Review, edit, approve or reject consequential actions"]
+    A --> C["Connector layer<br/>Zoho, HRMS / ATS, email, calendar and social platforms"]
+    C --> S["Supabase data store and audit layer<br/>Jobs, candidates, scores, drafts, reports and workflow events"]

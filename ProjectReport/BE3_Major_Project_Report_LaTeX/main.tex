@@ -1,0 +1,178 @@
+%=====================================================================
+%  BE Major Project Report -- Business Function Agentic Workflows
+%  FCRIT Vashi, Department of Computer Engineering, AY 2026-27
+%  Format reproduced from the department reference report (CodeSense).
+%
+%  HOW TO USE (Overleaf): upload this whole folder, set main.tex as the
+%  main document, compiler = pdfLaTeX. Compile twice so that Contents,
+%  List of Figures and List of Tables fill in.
+%
+%  Diagrams are authored in TikZ; system screenshots are in images/Screenshots.
+%
+%  OTHER BRANCH COPY: names/roll numbers live in the macros below.
+%  Change them once and every page updates.
+%=====================================================================
+\documentclass[12pt,a4paper]{report}
+\usepackage[a4paper,left=3cm,right=2cm,top=1.5cm,bottom=3cm,headheight=15pt]{geometry}
+% NOTE: no T1 fontenc -- the reference uses OT1 Computer Modern
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{pgfgantt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\lstdefinelanguage{TypeScript}{
+  keywords={break, case, catch, class, const, continue, debugger, default, delete, do, else, enum, export, extends, false, finally, for, function, if, import, in, instanceof, new, null, return, super, switch, this, throw, true, try, typeof, var, void, while, with, as, implements, interface, let, package, private, protected, public, static, yield, any, boolean, constructor, declare, get, module, require, number, set, string, symbol, type, from, of},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={string, boolean, number, void, any, never, unknown, object, undefined, null, symbol},
+  ndkeywordstyle=\color{teal}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+%---------------------------------------------------------------------
+%  PROJECT / TEAM DETAILS  (edit here only)
+%---------------------------------------------------------------------
+\newcommand{\ProjectTitle}{Business Function Agentic Workflows}
+\newcommand{\ProjectSubtitle}{HR, Marketing, Podcast Research \& Enterprise Integrations}
+\newcommand{\FullTitle}{\ProjectTitle: \ProjectSubtitle}
+\newcommand{\Partner}{InfinityPool (Shankh)}
+\newcommand{\ExternalMentor}{Mr.\ Akshay Kunkulol}
+\newcommand{\InternalGuideOne}{Mrs.\ Chetana Badgujar}
+\newcommand{\InternalGuideTwo}{Mr.\ Anand Pardeshi}
+% Legacy aliases kept for compatibility
+\newcommand{\InternalGuide}{Mrs.\ Chetana Badgujar}
+\newcommand{\IndustryGuide}{Mr.\ Anand Pardeshi}
+\newcommand{\Guides}{\InternalGuideOne, \InternalGuideTwo\ and \ExternalMentor}
+\newcommand{\StudentOne}{Krish Pinto}
+\newcommand{\RollOne}{1023228}
+\newcommand{\StudentTwo}{Jerin Reji}
+\newcommand{\RollTwo}{1023139}
+\newcommand{\StudentThree}{Ved Teredesai}
+\newcommand{\RollThree}{5023166}
+\newcommand{\StudentFour}{Samuel Rodrigues}
+\newcommand{\RollFour}{5023146}
+\newcommand{\Department}{Computer Engineering}
+\newcommand{\DepartmentCaps}{Computer Engineering}
+\newcommand{\AcademicYear}{2026-27}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+
+%---------------------------------------------------------------------
+%  Running header / footer
+%---------------------------------------------------------------------
+\fancypagestyle{body}{%
+  \fancyhf{}%
+  \fancyhead[R]{\ProjectTitle}%
+  \fancyfoot[L]{Fr.CRIT}%
+  \fancyfoot[R]{\thepage}%
+  \renewcommand{\headrulewidth}{1pt}%
+  \renewcommand{\footrulewidth}{0.6pt}}
+\fancypagestyle{plain}{%
+  \fancyhf{}\fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}}
+
+%---------------------------------------------------------------------
+%  Chapter headings: "Chapter N" + name alone on a page
+%---------------------------------------------------------------------
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\centering}{\chaptertitlename\ \thechapter}{24pt}{\Huge}
+\titleformat{name=\chapter,numberless}[block]
+  {\normalfont\Huge\bfseries\centering}{}{0pt}{}
+\titlespacing*{\chapter}{0pt}{50pt}{20pt}
+% ChapterPage: chapter title then content flows immediately (no blank page gap)
+\newcommand{\ChapterPage}[1]{\chapter{#1}\thispagestyle{plain}}
+
+%---------------------------------------------------------------------
+%  Figures: suppress "Figure X:" prefix in body; show custom bold caption;
+%  use \caption[short-lof-text]{display} so LoF/LoT are populated.
+%  captionsetup labelformat=empty hides the auto "Figure X:" label.
+%---------------------------------------------------------------------
+\DeclareCaptionLabelFormat{empty}{}
+\captionsetup[figure]{labelformat=empty,labelsep=none}
+\captionsetup[table]{labelformat=empty,labelsep=none}
+
+\newenvironment{bodyfigure}[1][H]
+  {\begin{figure}[#1]\centering}
+  {\end{figure}}
+
+% Screenshot figures: same as bodyfigure but with a 2pt black border
+\newenvironment{screenfigure}[1][H]
+  {\begin{figure}[#1]\centering%
+   \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{2pt}}
+  {\end{figure}}
+
+%---------------------------------------------------------------------
+%  Listings (plain, framed, numbered -- as in the reference)
+%---------------------------------------------------------------------
+\lstset{basicstyle=\ttfamily\small,numbers=left,numberstyle=\tiny,
+        frame=single,breaklines=true,columns=fixed,showstringspaces=false}
+\tikzset{
+  diagrambox/.style={
+    draw=blue!55!black, rounded corners=2pt, fill=blue!5,
+    align=center, text width=2.8cm, minimum height=1.1cm,
+    inner sep=5pt, font=\small
+  },
+  diagramactor/.style={
+    diagrambox, draw=gray!65, fill=gray!8
+  },
+  diagramdata/.style={
+    draw=orange!65!black, fill=orange!8, align=center,
+    minimum height=0.8cm, inner sep=4pt, font=\small
+  },
+  diagramarrow/.style={-{Stealth[length=2mm]}, thick, draw=blue!65!black}
+}
+
+%---------------------------------------------------------------------
+%  Helpers
+%---------------------------------------------------------------------
+\newcommand{\SigLine}[1]{#1\par\vspace{2em}\rule{5cm}{0.1pt}\par\vspace{1.25em}}
+\newcommand{\MemberSignatureBlock}{%
+  \noindent\begin{tabular}{@{}p{0.46\textwidth}p{0.46\textwidth}@{}}
+    \textbf{1. \StudentOne, \RollOne} & \textbf{2. \StudentTwo, \RollTwo}\\[1.25em]
+    \rule{5cm}{0.1pt} & \rule{5cm}{0.1pt}\\[1.75em]
+    \textbf{3. \StudentThree, \RollThree} & \textbf{\mbox{4. \StudentFour, \RollFour}}\\[1.25em]
+    \rule{5cm}{0.1pt} & \rule{5cm}{0.1pt}
+  \end{tabular}}
+\newcommand{\RunIn}[1]{\par\noindent\textbf{#1}\par\vspace{7pt}\noindent\ignorespaces}
+\newcommand{\ReqItem}[1]{\noindent\textbullet\ #1\\}
+\newcommand{\LitLabel}[1]{\par\noindent #1\\}
+
+\begin{document}
+\large
+\pagestyle{plain}
+
+\input{chapters/00_frontmatter}
+
+\clearpage
+\pagenumbering{arabic}
+\pagestyle{body}
+
+\input{chapters/01_introduction}
+\input{chapters/02_study}
+\input{chapters/03_proposed}
+\input{chapters/04_design}
+\input{chapters/05_results}
+\input{chapters/06_conclusion}
+\input{chapters/07_backmatter}
+
+\end{document}

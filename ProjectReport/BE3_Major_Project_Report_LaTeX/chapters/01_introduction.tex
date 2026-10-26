@@ -1,0 +1,30 @@
+%==================== CHAPTER 1 ====================
+\ChapterPage{Introduction}
+
+\section{Background}
+Most business teams today still spend a large part of their day on work that is repetitive but hard to fully delegate. An HR recruiter might sift through hundreds of resumes for a single role, spending hours on a task that follows the same mental checklist every time. A marketing team rewrites the same campaign message five times, once for LinkedIn, once for Instagram, once for a newsletter, and so on. A podcast producer spends an afternoon building a guest briefing by piecing together interviews, articles and social profiles from across the web. None of this requires deep creativity, yet it consumes the time people need for the decisions that actually matter.
+
+The software these teams use was not built to help much. Applicant tracking systems, HR platforms and CRM tools are good at storing and retrieving records, but they struggle with anything unstructured, such as a resume, a job description written in natural language, or a long-form article. Their rules are fixed, which means they cannot adapt when the inputs do not match the expected format. Recent advances in large language models have changed what is possible here \cite{autogen,guo,react}. These models can read unstructured text, reason about it, call external tools and pass results to other agents in a pipeline. Our project, developed in partnership with \Partner, applies this capability to the everyday business workflows where the gap between what software currently does and what teams actually need is widest.
+
+\section{Motivation}
+The problems with today's tools are not just inconveniences. In hiring, keyword-based screening has been shown to reward candidates who know how to phrase a resume rather than those who are actually the best fit for the role \cite{gan}. Worse, AI screening tools carry measurable racial and gender bias \cite{wilson}, and some can be fooled by hidden text that a human reader would never notice \cite{mu}. When a recruiter receives a ranked shortlist with no explanation, they have no way to catch these errors before they affect a real person's career.
+
+In marketing, content that goes out without a proper review can damage a brand in ways that take months to repair. In podcast research, a briefing built from unsourced or misattributed claims creates serious reputational risk for the host and the show \cite{cove,marketingfm}. And across all three functions, the data needed to do the work sits in separate systems, each with its own login, its own API, its own rate limits and its own quirks. Getting everything into one place is itself a full-time job.
+
+What teams really need is a system that can handle the repetitive parts end to end, explain every output clearly enough that a person can review and trust it, and then wait for that person to give the final go-ahead before anything consequential happens. That is the gap this project is designed to close.
+
+\section{Aim and Objectives}
+\RunIn{Aim :}
+The aim of \textbf{\ProjectTitle} is to design and build an integrated multi-agent AI platform that takes over the repetitive, high-volume parts of HR recruitment, marketing content operations, podcast guest research and enterprise data integration, while keeping a human reviewer in control of every decision that matters. The platform uses specialised LLM agents coordinated by a workflow router, grounded by a retrieval-augmented knowledge layer, and governed by approval gates and audit logs throughout.
+
+\vspace{12pt}
+\RunIn{Objectives :}
+The specific objectives of the project are:
+\begin{itemize}
+  \item To build HR workflows that generate weighted rubrics from a job description, screen and score resumes with cited evidence, conduct AI-assisted interviews and produce a ranked shortlist for the recruiter to review, alongside assistants that answer onboarding, leave and HR policy questions.
+  \item To build marketing workflows that turn a theme or source content into a content calendar, channel-specific drafts and audience segments, with every piece of content held for human approval before it goes anywhere.
+  \item To build podcast research workflows that gather public sources about a guest, index them for retrieval, and produce a structured briefing in which every claim is linked to a source and labelled as a verified fact, an allegation or an opinion.
+  \item To build a connector layer that communicates with Zoho, Workday-style and Greenhouse-style systems through authenticated, rate-limit-aware, idempotent API calls, with human approval required before any write operation goes through.
+  \item To enforce consistent governance across all workflows through a compliance reviewer that checks for PII, prompt injection and unsupported claims, an approval queue that holds every consequential output, and an audit log that records every prompt, tool call, source and reviewer action.
+  \item To package the entire platform as a reusable workflow framework and measure its performance on accuracy, hallucination rate, latency, cost and task completion.
+\end{itemize}
