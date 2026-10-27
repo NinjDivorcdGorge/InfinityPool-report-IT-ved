@@ -1,6 +1,6 @@
-PWD D:\VED\Coding\tp\Infy_ProjReport\ProjectReport\BE3_Major_Project_Report_LaTeX
+PWD d:\VED\Coding\tp\Infy_ProjReport\ProjectReport\BE3_Major_Project_Report_LaTeX
 INPUT C:\Users\USER\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT main.tex
+INPUT d:\VED\Coding\tp\Infy_ProjReport\ProjectReport\BE3_Major_Project_Report_LaTeX\main.tex
 OUTPUT main.log
 INPUT C:\Program Files\MiKTeX\tex\latex\base\report.cls
 INPUT C:\Program Files\MiKTeX\tex\latex\base\report.cls
@@ -322,9 +322,60 @@ INPUT .\chapters\04_design.tex
 INPUT .\chapters\04_design.tex
 INPUT .\chapters\04_design.tex
 INPUT chapters\04_design.tex
-INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr10.tfm
-INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\dfd-level1.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\ui-layout.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\system-block-diagram.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\hr-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\marketing-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\podcast-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
+INPUT .\images\diagrams\integration-workflow.png
 INPUT .\chapters\05_results.tex
 INPUT .\chapters\05_results.tex
 INPUT .\chapters\05_results.tex
@@ -358,13 +409,6 @@ INPUT .\images\Screenshots\5.1.4.png
 INPUT .\images\Screenshots\5.1.4.png
 INPUT .\images\Screenshots\5.1.4.png
 INPUT .\images\Screenshots\5.1.4.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
-INPUT .\images\Screenshots\5.1.5.png
 INPUT .\chapters\06_conclusion.tex
 INPUT .\chapters\06_conclusion.tex
 INPUT .\chapters\06_conclusion.tex
@@ -382,6 +426,7 @@ INPUT .\chapters\appendix_a_code_samples.tex
 INPUT chapters\appendix_a_code_samples.tex
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmtt12.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmtt10.tfm
+INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr10.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\tctt1095.tfm
 INPUT .\images\Plagarism_report.png
@@ -400,6 +445,7 @@ INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmti10.tfm
 INPUT .\images\fcrit_logo.png
 INPUT .\images\fcrit_logo.png
 INPUT .\images\fcrit_logo.png
+INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmmi8.tfm
@@ -422,22 +468,6 @@ INPUT .\images\internship_letter_logo.png
 INPUT .\images\internship_letter_signature.jpeg
 INPUT .\images\internship_letter_signature.jpeg
 INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_signature.jpeg
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
-INPUT .\images\internship_letter_logo.png
 INPUT .\images\internship_letter_signature.jpeg
 INPUT .\images\internship_letter_signature.jpeg
 INPUT .\images\internship_letter_signature.jpeg
