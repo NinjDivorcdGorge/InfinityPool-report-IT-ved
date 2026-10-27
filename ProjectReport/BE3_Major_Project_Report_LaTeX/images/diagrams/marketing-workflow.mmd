@@ -1,3 +1,15 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontSize': '22px',
+      'fontFamily': 'Arial',
+      'lineColor': '#2f3b52',
+      'primaryTextColor': '#111111',
+      'tertiaryTextColor': '#111111'
+    }
+  }
+}%%
 flowchart LR
     T["Theme or source content"] --> B["Retrieve brand memory"] --> C["Build calendar and briefs"] --> D["Generate channel drafts"]
     D --> A["Human approval queue"] --> P["Publish through connectors"] --> M["Track status and performance"]

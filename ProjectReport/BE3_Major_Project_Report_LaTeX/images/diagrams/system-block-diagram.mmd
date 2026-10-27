@@ -1,4 +1,16 @@
-flowchart TD
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontSize': '22px',
+      'fontFamily': 'Arial',
+      'lineColor': '#2f3b52',
+      'primaryTextColor': '#111111',
+      'tertiaryTextColor': '#111111'
+    }
+  }
+}%%
+flowchart LR
     U["Users: HR, candidates, marketing, podcast research and administrators"] --> D["Web dashboard and public application pages<br/>Next.js and React"]
     D --> R["Workflow routing and orchestration<br/>Request validation, routing and state"]
     R --> AI["AI provider layer<br/>Gemini, OpenAI and Ollama"]

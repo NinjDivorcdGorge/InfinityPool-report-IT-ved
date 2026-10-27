@@ -1,3 +1,15 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontSize': '22px',
+      'fontFamily': 'Arial',
+      'lineColor': '#2f3b52',
+      'primaryTextColor': '#111111',
+      'tertiaryTextColor': '#111111'
+    }
+  }
+}%%
 flowchart LR
     G["Enter guest name"] --> S["Collect public sources"] --> I["Chunk, embed and index"] --> R["Retrieve evidence by topic"]
     R --> L["Label claims: fact, allegation or opinion"] --> GU["Sensitive-topic guardrails"] --> H["Host reviews briefing"] --> B["Prepare cited briefing"]
