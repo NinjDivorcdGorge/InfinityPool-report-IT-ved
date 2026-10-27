@@ -1,3 +1,15 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontSize': '22px',
+      'fontFamily': 'Arial',
+      'lineColor': '#2f3b52',
+      'primaryTextColor': '#111111',
+      'tertiaryTextColor': '#111111'
+    }
+  }
+}%%
 flowchart LR
     RQ["Workflow requests a sync"] --> AUTH["Scoped OAuth authentication"] --> FETCH["Paginated, rate-limited fetch"] --> N["Normalize to common data model"]
     N --> A["Human approval for writes"] --> W["Approved write with retry and idempotency"] --> WH["Webhook triggers next workflow"] --> AUD["Audit each workflow step"]

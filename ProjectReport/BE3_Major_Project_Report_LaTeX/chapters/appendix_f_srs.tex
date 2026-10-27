@@ -53,14 +53,14 @@ Industry partner milestone plan and problem statement provided by \Partner{}; fo
 \noindent\textbf{2.2 Product Functions}\\
 The major functions of the system are:
 \begin{itemize}
-  \item Rubric generation from a job description, followed by HR review and approval.
-  \item Resume parsing, adversarial-content scanning, claim verification and rubric-based scoring.
-  \item AI-conducted live interviews with rubric-aligned scoring and final candidate ranking.
-  \item HR assistant for onboarding, leave, attendance and policy queries.
-  \item Content calendar, campaign brief and channel-specific draft generation for marketing teams.
-  \item Podcast guest background reports with every claim labelled as a fact, allegation or opinion.
-  \item Enterprise data synchronisation with Zoho People, Zoho CRM and Recruit, Workday-style APIs and Greenhouse-style ATS objects.
-  \item Human approval queues, PII redaction, compliance review and immutable audit logging.
+\item Generation of rubrics from a job description and their subsequent approval by HR.
+\item Resume parsing, adversarial-content scanning, claim verification, and rubric-based scoring.
+\item AI-conducted live interviews with rubric-aligned scoring and final candidate ranking.
+\item HR assistant to provide support on onboarding, leave, attendance and policy-related queries.
+\item Content calendar, campaign brief and channel-specific draft creation for marketing teams.
+\item Podcast guest background reports, which have all claims marked out as fact, opinion or allegation.
+\item Synchronisation of enterprise data with Zoho People, Zoho CRM and Recruit, Workday-style APIs and Greenhouse-style ATS objects.
+\item Human approval queues, redaction of PII, compliance review and immutable audit logging.
 \end{itemize}
 
 \vspace{8pt}
@@ -108,7 +108,7 @@ The major functions of the system are:
 \vspace{10pt}
 \noindent\textbf{3.2 Functional Requirements}
 
-\renewcommand{\arraystretch}{1.12}
+\renewcommand{\arraystretch}{0.96}
 \noindent\begin{tabular}{|p{0.13\textwidth}|p{0.80\textwidth}|}
 \hline
 \textbf{ID} & \textbf{Requirement} \\ \hline
@@ -123,7 +123,6 @@ REQ-08 & All marketing drafts shall be held in an approval queue; the system sha
 REQ-09 & The system shall produce podcast guest briefings covering career timeline, expertise map, prior interviews, suggested questions and sensitive topics, with every claim attributed to a cited source and labelled as a verified fact, allegation or opinion. \\ \hline
 REQ-10 & The system shall read and write data in Zoho, Workday-style and Greenhouse-style systems through a typed connector interface that handles OAuth, pagination, rate limits, retries and idempotency. \\ \hline
 REQ-11 & All external write operations and public communications, except auto-qualified interview invitations, shall wait for explicit human approval recorded in the audit log. \\ \hline
-REQ-12 & The system shall store, for every workflow run, the prompt, tool calls, retrieved sources, draft versions, reviewer identity and final output in an immutable audit log. \\ \hline
 \end{tabular}
 
 \vspace{10pt}
